@@ -33,6 +33,20 @@ bash scripts/phase2/hpl_tuning_quick.sh
 - Captured results from node dmr-88:
   - docs/aerospace/results/dmr-88_phase1_phase2_results.md
 
+## Benchmark Timeline (dmr-88)
+
+All times below are UTC.
+
+| Phase | Benchmark | Run Time (UTC) | Artifact |
+|---|---|---|---|
+| Phase 1 | Baseline inventory | 2026-04-16 17:57:19 | `/root/phase1_baseline_20260416_175719.txt` |
+| Phase 2 | STREAM | 2026-04-16 18:34:36 | `stream_run_20260416_183436.log` |
+| Phase 2 | OSU latency | 2026-04-16 18:40:31 | `osu_latency_20260416_184031.log` |
+| Phase 2 | OSU bandwidth | 2026-04-16 18:41:02 | `osu_bw_20260416_184102.log` |
+| Phase 2 | HPL (prior baseline) | 2026-04-16 19:28:09 | `hpl_run_small_t1_20260416_192809.log` |
+| Phase 2 | HPL sweep summary (quick) | 2026-04-16 19:48:56 | `hpl_sweep_quick_20260416_194856.csv` |
+| Phase 2 | HPL sweep summary (manual) | 2026-04-16 19:54:19 | `hpl_sweep_manual_20260416_195419.csv` |
+
 ## What This Repository Gives You
 
 - Repeatable host readiness checks
