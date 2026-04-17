@@ -36,6 +36,10 @@ Math/helper stack:
 
 ### STREAM (88 OpenMP threads)
 
+Run time (UTC):
+- 2026-04-16 18:34:36
+- Source artifact: /root/benchmarks/phase2/stream/stream_run_20260416_183436.log
+
 Best rates:
 - Copy: 9409.5 MB/s
 - Scale: 9026.5 MB/s
@@ -46,6 +50,12 @@ Validation: solution validates.
 
 ### OSU MPI microbenchmarks (OpenMPI, 2 ranks)
 
+Run times (UTC):
+- Latency: 2026-04-16 18:40:31
+  - Source artifact: /root/benchmarks/phase2/osu/osu_latency_20260416_184031.log
+- Bandwidth: 2026-04-16 18:41:02
+  - Source artifact: /root/benchmarks/phase2/osu/osu_bw_20260416_184102.log
+
 Latency sample:
 - 4 MiB message: 236.75 us
 
@@ -54,6 +64,17 @@ Bandwidth sample:
 - Peak observed region: ~22.6 GB/s
 
 ### HPL
+
+Run times (UTC):
+- 2026-04-16 18:48:49 (hpl_run_20260416_184849.log)
+- 2026-04-16 18:49:45 (hpl_run_20260416_184945.log)
+- 2026-04-16 19:12:19 (hpl_run_small_20260416_191219.log)
+- 2026-04-16 19:13:14 (hpl_run_small_20260416_191314.log)
+- 2026-04-16 19:28:09 (hpl_run_small_t1_20260416_192809.log)
+
+Sweep summary generation times (UTC):
+- 2026-04-16 19:48:56 (hpl_sweep_quick_20260416_194856.csv)
+- 2026-04-16 19:54:19 (hpl_sweep_manual_20260416_195419.csv)
 
 Single case (prior baseline):
 - N=50000, NB=384, P=8, Q=11
@@ -86,6 +107,7 @@ Best large-N validation:
 
 - Baseline inventory report:
   - /root/phase1_baseline_20260416_175719.txt
+  - Generated at: 2026-04-16 17:57:19 UTC
 - STREAM logs:
   - /root/benchmarks/phase2/stream/stream_run_*.log
 - OSU logs:
