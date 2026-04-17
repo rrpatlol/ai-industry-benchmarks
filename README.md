@@ -14,6 +14,7 @@ Current focus:
 
 ```bash
 bash scripts/phase1/collect_baseline.sh
+bash scripts/phase1/collect_hardware_bom.sh
 ```
 
 3) Run Phase 2 baselines:
@@ -32,6 +33,9 @@ bash scripts/phase2/hpl_tuning_quick.sh
 
 - Captured results from node dmr-88:
   - docs/aerospace/results/dmr-88_phase1_phase2_results.md
+
+- Captured hardware BOM from node dmr-88:
+  - docs/aerospace/results/dmr-88_hardware_bom.md
 
 ## Benchmark Timeline (dmr-88)
 
