@@ -47,6 +47,24 @@ All times below are UTC.
 | Phase 2 | HPL sweep summary (quick) | 2026-04-16 19:48:56 | `hpl_sweep_quick_20260416_194856.csv` |
 | Phase 2 | HPL sweep summary (manual) | 2026-04-16 19:54:19 | `hpl_sweep_manual_20260416_195419.csv` |
 
+## Benchmark Durations (dmr-88)
+
+All times below are UTC.
+
+| Benchmark | Start | End | Elapsed (s) |
+|---|---|---|---:|
+| Baseline inventory | 2026-04-16 17:57:19 | 2026-04-16 17:57:20 | 1 |
+| STREAM | 2026-04-16 18:34:36 | 2026-04-16 18:35:12 | 36 |
+| OSU latency | 2026-04-16 18:40:31 | 2026-04-16 18:40:33 | 2 |
+| OSU bandwidth | 2026-04-16 18:41:02 | 2026-04-16 18:41:04 | 2 |
+| HPL prior baseline | 2026-04-16 19:28:13 | 2026-04-16 19:36:26 | 493 |
+| HPL sweep quick summary | 2026-04-16 19:48:56 | 2026-04-16 19:49:39 | 43 |
+| HPL sweep manual summary | 2026-04-16 19:54:19 | 2026-04-16 20:09:06 | 887 |
+
+Duration notes:
+- HPL prior baseline duration is from explicit HPL start/end lines in the log.
+- Other durations are derived from artifact timestamp naming and file modified times.
+
 ## What This Repository Gives You
 
 - Repeatable host readiness checks

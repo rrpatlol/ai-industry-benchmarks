@@ -116,3 +116,21 @@ Best large-N validation:
 - HPL logs and summaries:
   - /root/benchmarks/phase2/hpl-2.3/bin/dmr-88/hpl_run_*.log
   - /root/benchmarks/phase2/hpl-2.3/bin/dmr-88/sweep_logs/*.csv
+
+## Benchmark Duration Table
+
+All times below are UTC.
+
+| Benchmark | Start | End | Elapsed (s) | Method |
+|---|---|---|---:|---|
+| Baseline inventory | 2026-04-16 17:57:19 | 2026-04-16 17:57:20 | 1 | filename timestamp to file modified time |
+| STREAM | 2026-04-16 18:34:36 | 2026-04-16 18:35:12 | 36 | filename timestamp to file modified time |
+| OSU latency | 2026-04-16 18:40:31 | 2026-04-16 18:40:33 | 2 | filename timestamp to file modified time |
+| OSU bandwidth | 2026-04-16 18:41:02 | 2026-04-16 18:41:04 | 2 | filename timestamp to file modified time |
+| HPL prior baseline | 2026-04-16 19:28:13 | 2026-04-16 19:36:26 | 493 | explicit HPL start/end lines in log |
+| HPL sweep quick summary | 2026-04-16 19:48:56 | 2026-04-16 19:49:39 | 43 | summary filename timestamp to file modified time |
+| HPL sweep manual summary | 2026-04-16 19:54:19 | 2026-04-16 20:09:06 | 887 | summary filename timestamp to file modified time |
+
+Notes:
+- For STREAM/OSU and sweep summaries, elapsed values are approximate and derived from artifact timestamp naming plus file modified time.
+- For HPL prior baseline, elapsed is exact from HPL log lines (`HPL_pdgesv() start time` and `HPL_pdgesv() end time`).
