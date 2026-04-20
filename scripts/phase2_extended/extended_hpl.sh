@@ -5,9 +5,11 @@
 set -e
 
 OUT_DIR="${1:-.}"
+OUT_DIR_ABS="$(readlink -f "$OUT_DIR")"
 mkdir -p "$OUT_DIR/logs" "$OUT_DIR/hpl_inputs"
 
 cd /root/benchmarks/phase2/hpl-2.3
+mkdir -p hpl_inputs
 
 echo "=== Extended HPL: Aerospace-scale problem sizes ==="
 
@@ -48,17 +50,27 @@ EOF
 
 export OPENBLAS_NUM_THREADS=1
 export OMP_NUM_THREADS=1
+MPI_BIN="${MPI_BIN:-/usr/lib64/openmpi/bin}"
+MPIRUN="$MPI_BIN/mpirun"
 
-LOG="../phase2_extended/logs/hpl_extended_$(date +%Y%m%d_%H%M%S).log"
+if [[ ! -x "$MPIRUN" ]]; then
+  echo "ERROR: mpirun not found at $MPIRUN"
+  exit 1
+fi
+
+LOG="$OUT_DIR_ABS/logs/hpl_extended_$(date +%Y%m%d_%H%M%S).log"
+
+# Ensure xhpl finds its default input file in current working directory.
+cp hpl_inputs/HPL_extended.dat HPL.dat
 
 echo "Running HPL extended sweep: N=75k,100k,125k,150k -> $LOG"
 echo "This may take 4-8 hours depending on system load."
 echo ""
 
-mpirun -np 88 \
+"$MPIRUN" --allow-run-as-root --mca plm_rsh_agent false -np 88 \
   --map-by ppr:88:node \
   --bind-to core \
-  /root/benchmarks/phase2/hpl-2.3/bin/dmr-88/xhpl < hpl_inputs/HPL_extended.dat 2>&1 | tee "$LOG"
+  /root/benchmarks/phase2/hpl-2.3/bin/dmr-88/xhpl 2>&1 | tee "$LOG"
 
 echo ""
 echo "Extended HPL complete. Results in $LOG"

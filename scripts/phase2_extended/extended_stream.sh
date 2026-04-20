@@ -13,7 +13,7 @@ echo "=== Extended STREAM: Threading sweep ==="
 for THREADS in 1 4 22 44 88; do
   LOG="$OUT_DIR/logs/stream_threads_${THREADS}_$(date +%Y%m%d_%H%M%S).log"
   echo "Running STREAM with $THREADS threads -> $LOG"
-  OMP_NUM_THREADS=$THREADS OMP_NUM_TEAMS=1 /root/benchmarks/phase2/stream/stream >> "$LOG" 2>&1
+  OMP_NUM_THREADS=$THREADS OMP_NUM_TEAMS=1 /root/benchmarks/phase2/stream/stream_omp >> "$LOG" 2>&1
   echo "  Complete."
 done
 
