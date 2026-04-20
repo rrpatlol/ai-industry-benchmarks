@@ -26,6 +26,15 @@ bash scripts/phase2/build_hpl.sh
 bash scripts/phase2/hpl_tuning_quick.sh
 ```
 
+4) Run model evaluation harness (one command):
+
+```bash
+bash scripts/eval/run_model_harness_pipeline.sh \
+  --spec benchmarks/harness/model_eval_spec.yaml \
+  --results benchmarks/harness/example_results.yaml \
+  --out-dir docs/aerospace/results/generated
+```
+
 ## Documentation
 
 - Full step-by-step runbook:

@@ -9,7 +9,17 @@ This quickstart runs the benchmark harness against measured results and generate
 - Measured run results:
   - benchmarks/harness/example_results.yaml (replace with real outputs)
 
-## Step 1: Run evaluator
+## One-Command Pipeline (recommended)
+
+bash scripts/eval/run_model_harness_pipeline.sh \
+  --spec benchmarks/harness/model_eval_spec.yaml \
+  --results benchmarks/harness/example_results.yaml \
+  --out-dir docs/aerospace/results/generated \
+  --run-id dmr88_eval_example
+
+If --run-id is omitted, a timestamped run ID is generated automatically.
+
+## Manual Step 1: Run evaluator
 
 python3 scripts/eval/run_model_harness.py \
   --spec benchmarks/harness/model_eval_spec.yaml \
@@ -17,7 +27,7 @@ python3 scripts/eval/run_model_harness.py \
   --out docs/aerospace/results/generated/model_harness_scorecard_example.json \
   --run-id dmr88_eval_example
 
-## Step 2: Render markdown report
+## Manual Step 2: Render markdown report
 
 python3 scripts/eval/generate_markdown_report.py \
   --scorecard docs/aerospace/results/generated/model_harness_scorecard_example.json \
@@ -26,9 +36,9 @@ python3 scripts/eval/generate_markdown_report.py \
 ## Outputs
 
 - JSON scorecard:
-  - docs/aerospace/results/generated/model_harness_scorecard_example.json
+  - docs/aerospace/results/generated/model_harness_scorecard_<run-id>.json
 - Markdown report:
-  - docs/aerospace/results/generated/model_harness_scorecard_example.md
+  - docs/aerospace/results/generated/model_harness_scorecard_<run-id>.md
 
 ## Interpreting decisions
 
