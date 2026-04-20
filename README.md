@@ -37,6 +37,12 @@ bash scripts/phase2/hpl_tuning_quick.sh
 - Captured hardware BOM from node dmr-88:
   - docs/aerospace/results/dmr-88_hardware_bom.md
 
+- Model sizing matrix and shortlist:
+  - docs/aerospace/results/dmr-88_model_sizing_matrix.md
+
+- Model benchmark harness quickstart:
+  - docs/aerospace/results/model_harness_quickstart.md
+
 ## Benchmark Timeline (dmr-88)
 
 All times below are UTC.
