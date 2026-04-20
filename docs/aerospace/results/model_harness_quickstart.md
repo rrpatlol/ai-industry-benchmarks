@@ -9,7 +9,17 @@ This quickstart runs the benchmark harness against measured results and generate
 - Measured run results:
   - benchmarks/harness/example_results.yaml (replace with real outputs)
 
-## One-Command Pipeline (recommended)
+## Recommended Workflow
+
+### Step 1: Validate results file
+
+python3 scripts/eval/validate_harness_results.py \
+  --spec benchmarks/harness/model_eval_spec.yaml \
+  --results benchmarks/harness/example_results.yaml
+
+This checks that all required metrics are present and reports missing fields.
+
+### Step 2: Run one-command pipeline
 
 bash scripts/eval/run_model_harness_pipeline.sh \
   --spec benchmarks/harness/model_eval_spec.yaml \
@@ -19,7 +29,9 @@ bash scripts/eval/run_model_harness_pipeline.sh \
 
 If --run-id is omitted, a timestamped run ID is generated automatically.
 
-## Manual Step 1: Run evaluator
+## Manual Steps (if needed)
+
+### Manual Step 1: Run evaluator
 
 python3 scripts/eval/run_model_harness.py \
   --spec benchmarks/harness/model_eval_spec.yaml \
@@ -27,7 +39,7 @@ python3 scripts/eval/run_model_harness.py \
   --out docs/aerospace/results/generated/model_harness_scorecard_example.json \
   --run-id dmr88_eval_example
 
-## Manual Step 2: Render markdown report
+### Manual Step 2: Render markdown report
 
 python3 scripts/eval/generate_markdown_report.py \
   --scorecard docs/aerospace/results/generated/model_harness_scorecard_example.json \
