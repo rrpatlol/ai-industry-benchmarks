@@ -26,7 +26,15 @@ bash scripts/phase2/build_hpl.sh
 bash scripts/phase2/hpl_tuning_quick.sh
 ```
 
-4) Run model evaluation harness (one command):
+4) Run extended Phase 2 parameter sweeps (optional, long-running):
+
+```bash
+bash scripts/phase2_extended/extended_stream.sh /path/to/results
+bash scripts/phase2_extended/extended_osu.sh /path/to/results
+bash scripts/phase2_extended/extended_hpl.sh /path/to/results
+```
+
+5) Run model evaluation harness (one command):
 
 ```bash
 bash scripts/eval/run_model_harness_pipeline.sh \
@@ -45,6 +53,9 @@ bash scripts/eval/run_model_harness_pipeline.sh \
 
 - Captured hardware BOM from node dmr-88:
   - docs/aerospace/results/dmr-88_hardware_bom.md
+
+- Extended Phase 2 analysis (parameter sweep and aerospace workload sizing):
+  - docs/aerospace/results/dmr-88_phase2_extended_analysis.md
 
 - Model sizing matrix and shortlist:
   - docs/aerospace/results/dmr-88_model_sizing_matrix.md
@@ -89,6 +100,7 @@ Duration notes:
 - Repeatable host readiness checks
 - Standardized benchmark execution flow
 - Practical troubleshooting notes (HPL archiver issue, oversubscription handling, STREAM memory model)
+- Extended parameter sweeps for STREAM (threading), OSU (message sizes), HPL (problem sizes)
 - Script-first process so a new engineer can reproduce setup on another node
 
 ## Next Planned Additions
