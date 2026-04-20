@@ -67,6 +67,47 @@ The table below gives practical starting models for aerospace text workflows, do
 | Maintenance log summarization | FLAN-T5-large | Shift to FLAN-T5-xl with quantization or GPU inference |
 | Offline quality benchmark lane | Mistral-7B-Instruct-v0.3 (4-bit) | Add 13B class on GPU cluster for higher-quality baselines |
 
+## Benchmark Harness Matrix (Go/No-Go)
+
+Use this table to evaluate candidates consistently before promoting them into production or larger-scale experiments.
+
+| Candidate lane | Primary task | Core quality metrics | Core performance metrics | Go threshold | No-go trigger |
+|---|---|---|---|---|---|
+| Qwen2.5-1.5B / SmolLM2-1.7B | Domain assistant drafts, FAQ | Grounded answer rate >= 90%, hallucination rate <= 8%, SME score >= 3.8/5 | P50 time-to-first-token <= 2.5 s, sustained decode >= 8 tok/s | All quality thresholds pass and at least 1 performance target passes | Hallucination > 12% or grounded answer rate < 85% |
+| Qwen2.5-3B / Phi-3.5-mini | Higher quality technical generation | Grounded answer rate >= 92%, hallucination <= 6%, SME score >= 4.0/5 | P50 TTFT <= 3.5 s, sustained decode >= 5 tok/s | Pass all quality thresholds | Hallucination > 10% or TTFT > 6 s |
+| Mistral-7B / Llama-8B (4-bit) | Offline benchmark quality lane | Grounded answer rate >= 94%, hallucination <= 5%, SME score >= 4.2/5 | End-to-end response <= 30 s for 512 output tokens | Quality thresholds pass in offline batch mode | Mean response > 45 s or hallucination > 8% |
+| ModernBERT / DeBERTa-v3 | Classification, NER, compliance tagging | Macro-F1 >= 0.90, class-wise recall >= 0.85 | Inference <= 40 ms/sample at batch 32 | Macro-F1 and recall pass | Macro-F1 < 0.86 |
+| e5-large / gte-large / BGE-large | Dense retrieval embeddings | nDCG@10 >= 0.80, Recall@20 >= 0.90 | Embedding throughput >= 120 docs/s (256 tokens avg) | Both retrieval metrics pass | nDCG@10 < 0.75 |
+| bge-reranker / MiniLM reranker | Top-k reranking | MRR@10 >= 0.82, nDCG@10 uplift >= +0.05 over bi-encoder only | Rerank latency <= 120 ms/query for top-50 | Quality uplift and latency both pass | Uplift < +0.02 or latency > 200 ms |
+| FLAN-T5-large / BART-large | Summarization | ROUGE-L >= 0.42, factual consistency >= 90% | <= 10 s/sample for 1k-token input | ROUGE and factual consistency pass | Factual consistency < 85% |
+| LayoutLMv3 / Donut-base | Document extraction QA | Field-level F1 >= 0.90, exact-match >= 0.75 | <= 1.5 s/page processing | Field-F1 pass and exact-match near target | Field-F1 < 0.85 |
+| Whisper-small / Whisper-medium | Transcription | WER <= 12% clean, <= 20% noisy | Real-time factor <= 0.8 for batch transcription | WER and RTF pass | WER > 24% on operational audio |
+
+## Evaluation Protocol
+
+| Dimension | Standard setting on dmr-88 |
+|---|---|
+| Dataset split | 70/15/15 train/validation/test or fixed benchmark holdout |
+| Repetitions | 3 runs per candidate, report mean and p95 |
+| Prompt seed control | Fixed templates + fixed random seeds |
+| Latency measure | TTFT, end-to-end latency, tokens/s (for generative models) |
+| Hardware pinning | NUMA-aware affinity and fixed thread config per run |
+| Acceptance gate | Go only if quality passes and no-go triggers are absent |
+
+## Suggested Benchmark Harness Outputs
+
+- Per-model report card:
+  - quality metrics table
+  - latency/throughput table
+  - pass/fail against go thresholds
+- Comparison sheet:
+  - best quality model
+  - best latency model
+  - best balanced model (quality/latency)
+- Decision note:
+  - promote, hold, or drop
+  - rationale and next action
+
 ## Practical Run Profiles
 
 | Workload type | Recommended profile on dmr-88 |
