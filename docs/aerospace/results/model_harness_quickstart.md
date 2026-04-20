@@ -1,0 +1,43 @@
+# Model Harness Quickstart
+
+This quickstart runs the benchmark harness against measured results and generates a markdown scorecard for review.
+
+## Inputs
+
+- Spec file:
+  - benchmarks/harness/model_eval_spec.yaml
+- Measured run results:
+  - benchmarks/harness/example_results.yaml (replace with real outputs)
+
+## Step 1: Run evaluator
+
+python3 scripts/eval/run_model_harness.py \
+  --spec benchmarks/harness/model_eval_spec.yaml \
+  --results benchmarks/harness/example_results.yaml \
+  --out docs/aerospace/results/generated/model_harness_scorecard_example.json \
+  --run-id dmr88_eval_example
+
+## Step 2: Render markdown report
+
+python3 scripts/eval/generate_markdown_report.py \
+  --scorecard docs/aerospace/results/generated/model_harness_scorecard_example.json \
+  --out docs/aerospace/results/generated/model_harness_scorecard_example.md
+
+## Outputs
+
+- JSON scorecard:
+  - docs/aerospace/results/generated/model_harness_scorecard_example.json
+- Markdown report:
+  - docs/aerospace/results/generated/model_harness_scorecard_example.md
+
+## Interpreting decisions
+
+- GO: all go-threshold checks pass, and no no-go trigger was hit.
+- HOLD: at least one go-threshold check failed, but no no-go trigger fired.
+- NO-GO: one or more no-go triggers fired.
+
+## Dependency note
+
+If YAML parsing is unavailable, install PyYAML:
+
+pip install pyyaml

@@ -1,0 +1,247 @@
+version: 1
+profile:
+  name: dmr-88
+  hardware:
+    cpu_cores: 88
+    numa_nodes: 1
+    ram_gib: 755
+    gpu_present: false
+    network: 1GbE
+
+global:
+  repetitions: 3
+  acceptance_rule: all_go_thresholds_and_no_no_go_triggers
+  notes:
+    - Prefer fixed prompt templates and fixed random seeds.
+    - Report mean and p95 where available.
+
+lanes:
+  - lane_id: domain_assistant_small
+    task: domain assistant drafts and FAQ
+    candidate_models:
+      - Qwen2.5-1.5B-Instruct
+      - SmolLM2-1.7B-Instruct
+      - TinyLlama-1.1B-Chat
+    metrics:
+      - key: grounded_answer_rate
+        direction: gte
+        go_threshold: 0.90
+        no_go_threshold: 0.85
+        category: quality
+      - key: hallucination_rate
+        direction: lte
+        go_threshold: 0.08
+        no_go_threshold: 0.12
+        category: quality
+      - key: sme_score
+        direction: gte
+        go_threshold: 3.8
+        no_go_threshold: 3.5
+        category: quality
+      - key: p50_ttft_seconds
+        direction: lte
+        go_threshold: 2.5
+        no_go_threshold: 4.0
+        category: performance
+      - key: decode_tokens_per_second
+        direction: gte
+        go_threshold: 8.0
+        no_go_threshold: 5.0
+        category: performance
+
+  - lane_id: domain_assistant_mid
+    task: higher quality technical generation
+    candidate_models:
+      - Qwen2.5-3B-Instruct
+      - Phi-3.5-mini-instruct
+    metrics:
+      - key: grounded_answer_rate
+        direction: gte
+        go_threshold: 0.92
+        no_go_threshold: 0.88
+        category: quality
+      - key: hallucination_rate
+        direction: lte
+        go_threshold: 0.06
+        no_go_threshold: 0.10
+        category: quality
+      - key: sme_score
+        direction: gte
+        go_threshold: 4.0
+        no_go_threshold: 3.7
+        category: quality
+      - key: p50_ttft_seconds
+        direction: lte
+        go_threshold: 3.5
+        no_go_threshold: 6.0
+        category: performance
+      - key: decode_tokens_per_second
+        direction: gte
+        go_threshold: 5.0
+        no_go_threshold: 3.0
+        category: performance
+
+  - lane_id: offline_quality_7b
+    task: offline benchmark quality lane
+    candidate_models:
+      - Mistral-7B-Instruct-v0.3-4bit
+      - Llama-3.1-8B-Instruct-4bit
+      - Qwen2.5-7B-Instruct-4bit
+    metrics:
+      - key: grounded_answer_rate
+        direction: gte
+        go_threshold: 0.94
+        no_go_threshold: 0.90
+        category: quality
+      - key: hallucination_rate
+        direction: lte
+        go_threshold: 0.05
+        no_go_threshold: 0.08
+        category: quality
+      - key: sme_score
+        direction: gte
+        go_threshold: 4.2
+        no_go_threshold: 3.8
+        category: quality
+      - key: e2e_latency_seconds_512_tokens
+        direction: lte
+        go_threshold: 30.0
+        no_go_threshold: 45.0
+        category: performance
+
+  - lane_id: classification_ner
+    task: classification, NER, compliance tagging
+    candidate_models:
+      - ModernBERT-base
+      - DeBERTa-v3-base
+      - roberta-large
+    metrics:
+      - key: macro_f1
+        direction: gte
+        go_threshold: 0.90
+        no_go_threshold: 0.86
+        category: quality
+      - key: classwise_recall_min
+        direction: gte
+        go_threshold: 0.85
+        no_go_threshold: 0.80
+        category: quality
+      - key: inference_ms_per_sample_batch32
+        direction: lte
+        go_threshold: 40.0
+        no_go_threshold: 70.0
+        category: performance
+
+  - lane_id: dense_retrieval
+    task: dense retrieval embeddings
+    candidate_models:
+      - BGE-large-en-v1.5
+      - e5-large-v2
+      - gte-large
+    metrics:
+      - key: ndcg_at_10
+        direction: gte
+        go_threshold: 0.80
+        no_go_threshold: 0.75
+        category: quality
+      - key: recall_at_20
+        direction: gte
+        go_threshold: 0.90
+        no_go_threshold: 0.85
+        category: quality
+      - key: embedding_docs_per_second
+        direction: gte
+        go_threshold: 120.0
+        no_go_threshold: 80.0
+        category: performance
+
+  - lane_id: reranking
+    task: cross-encoder reranking
+    candidate_models:
+      - bge-reranker-large
+      - ms-marco-MiniLM-L-12-v2
+    metrics:
+      - key: mrr_at_10
+        direction: gte
+        go_threshold: 0.82
+        no_go_threshold: 0.78
+        category: quality
+      - key: ndcg_at_10_uplift
+        direction: gte
+        go_threshold: 0.05
+        no_go_threshold: 0.02
+        category: quality
+      - key: rerank_latency_ms_top50
+        direction: lte
+        go_threshold: 120.0
+        no_go_threshold: 200.0
+        category: performance
+
+  - lane_id: summarization
+    task: summarization and structured transformation
+    candidate_models:
+      - FLAN-T5-large
+      - FLAN-T5-xl
+      - BART-large-CNN
+    metrics:
+      - key: rouge_l
+        direction: gte
+        go_threshold: 0.42
+        no_go_threshold: 0.36
+        category: quality
+      - key: factual_consistency
+        direction: gte
+        go_threshold: 0.90
+        no_go_threshold: 0.85
+        category: quality
+      - key: seconds_per_sample_1k_input
+        direction: lte
+        go_threshold: 10.0
+        no_go_threshold: 18.0
+        category: performance
+
+  - lane_id: doc_qa_extraction
+    task: OCR post-processing and document QA extraction
+    candidate_models:
+      - LayoutLMv3-base
+      - Donut-base
+      - Pix2Struct-base
+    metrics:
+      - key: field_f1
+        direction: gte
+        go_threshold: 0.90
+        no_go_threshold: 0.85
+        category: quality
+      - key: exact_match
+        direction: gte
+        go_threshold: 0.75
+        no_go_threshold: 0.68
+        category: quality
+      - key: seconds_per_page
+        direction: lte
+        go_threshold: 1.5
+        no_go_threshold: 2.8
+        category: performance
+
+  - lane_id: speech_transcription
+    task: transcription quality under clean and noisy conditions
+    candidate_models:
+      - Whisper-small
+      - Whisper-medium
+      - wav2vec2-base-960h
+    metrics:
+      - key: wer_clean
+        direction: lte
+        go_threshold: 0.12
+        no_go_threshold: 0.18
+        category: quality
+      - key: wer_noisy
+        direction: lte
+        go_threshold: 0.20
+        no_go_threshold: 0.24
+        category: quality
+      - key: real_time_factor
+        direction: lte
+        go_threshold: 0.80
+        no_go_threshold: 1.10
+        category: performance
