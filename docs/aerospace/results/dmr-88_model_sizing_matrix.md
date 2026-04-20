@@ -42,6 +42,31 @@ This matrix maps common model families and parameter ranges to expected fit and 
 | Diffusion models (U-Net + text encoder + VAE) | typical SD-class | Inference can run slowly on CPU; fine-tuning impractical | Use for correctness tests only; move production fine-tune to GPU | CPU-only generation is high latency |
 | Embedding models | <= 1B | Fits well | Batch embedding generation on CPU | Good use case for this node with careful thread tuning |
 
+## Companion Model Shortlist
+
+The table below gives practical starting models for aerospace text workflows, document intelligence, and retrieval on this hardware.
+
+| Workload | Size band | Candidate models | Expected strategy on dmr-88 | Why this is a good fit |
+|---|---|---|---|---|
+| Domain chat + instruction following | 0.5B to 2B | Qwen2.5-1.5B-Instruct, SmolLM2-1.7B-Instruct, TinyLlama-1.1B-Chat | INT8/4-bit inference; LoRA adapters for domain style | Strong quality-to-cost ratio on CPU |
+| Controlled generation / report drafting | 2B to 4B | Qwen2.5-3B-Instruct, Phi-3.5-mini-instruct | 4-bit inference; small-batch PEFT only | Better reasoning than sub-1B while still manageable |
+| Offline analysis and eval runs | 7B class | Llama-3.1-8B-Instruct, Mistral-7B-Instruct-v0.3, Qwen2.5-7B-Instruct | 4-bit offline jobs, no strict latency SLO | Good benchmark anchor for response quality |
+| Classification, NER, compliance tagging | 100M to 500M | ModernBERT-base, DeBERTa-v3-base, roberta-large | Full CPU fine-tune feasible | Excellent for aerospace document triage and metadata extraction |
+| Dense retrieval / semantic search | 100M to 400M | BGE-large-en-v1.5, e5-large-v2, gte-large | Batched embedding generation on CPU | High value for RAG grounding and search relevance |
+| Cross-encoder reranking | 100M to 500M | bge-reranker-large, ms-marco-MiniLM-L-12-v2 | CPU inference with moderate batch sizes | Improves retrieval precision for technical corpora |
+| Summarization and structured transformation | 200M to 1B | FLAN-T5-large, FLAN-T5-xl, BART-large-CNN | Fine-tune small variants; quantized inference for larger | Strong fit for maintenance logs and incident summaries |
+| OCR post-processing and doc QA | 100M to 1B | LayoutLMv3-base, Donut-base, Pix2Struct-base | CPU inference + task-specific fine-tune (small variants) | Useful for scanned manuals and forms |
+| Speech transcription adaptation | 100M to 1B | Whisper-small, Whisper-medium, wav2vec2-base-960h | Inference and light adaptation only | Good for cockpit/maintenance audio pipelines |
+
+## Recommended Starting Stack by Use Case
+
+| Use case | Start here | Scale-up path |
+|---|---|---|
+| Aerospace RAG assistant | e5-large-v2 + bge-reranker-large + Qwen2.5-3B-Instruct | Move generator to 7B on GPU when latency/quality targets require |
+| Technical document classification | ModernBERT-base or DeBERTa-v3-base | Upgrade to larger encoder if label space is very fine-grained |
+| Maintenance log summarization | FLAN-T5-large | Shift to FLAN-T5-xl with quantization or GPU inference |
+| Offline quality benchmark lane | Mistral-7B-Instruct-v0.3 (4-bit) | Add 13B class on GPU cluster for higher-quality baselines |
+
 ## Practical Run Profiles
 
 | Workload type | Recommended profile on dmr-88 |
